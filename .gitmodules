@@ -1,3 +1,6 @@
 [submodule "include/QtGigE"]
 	path = include/QtGigE
 	url = git@github.com:Stigaard/QtGigE.git
+[submodule "include/qextserialport"]
+	path = include/qextserialport
+	url = https://code.google.com/p/qextserialport/
