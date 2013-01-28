@@ -1,0 +1,3 @@
+[submodule "include/QtGigE"]
+	path = include/QtGigE
+	url = git@github.com:Stigaard/QtGigE.git
