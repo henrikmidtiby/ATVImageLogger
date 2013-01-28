@@ -7,3 +7,6 @@
 [submodule "include/qOpenGLCVWidget"]
 	path = include/qOpenGLCVWidget
 	url = git@github.com:Stigaard/qOpenGLCVWidget.git
+[submodule "include/qtgpscWidget"]
+	path = include/qtgpscWidget
+	url = git@github.com:Stigaard/qtgpscWidget.git
