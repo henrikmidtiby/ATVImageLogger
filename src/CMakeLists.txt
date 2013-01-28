@@ -1,6 +1,11 @@
 if(USE_DATALOGGER) #If logging data
-  set(DATALOGGER_SRCS datalogger.cpp)
+  set(DATALOGGER_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/datalogger.cpp)
   add_definitions(-DUSE_DATALOGGER)
 endif(USE_DATALOGGER)
 
-set(VisionSpray_SRCS ${DATALOGGER_SRCS} makerelativecoordinatesworker.cpp calculategaussianfeaturesworker.cpp algoritm.cpp VisionSpray.cpp main.cpp cqtopencvviewergl.cpp spraytimekeeper.cpp)
+set(VisionSpray_SRCS 
+      ${DATALOGGER_SRCS} 
+      ${CMAKE_CURRENT_SOURCE_DIR}/VisionSpray.cpp 
+      ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp 
+      ${CMAKE_CURRENT_SOURCE_DIR}/spraytimekeeper.cpp 
+    PARENT_SCOPE)

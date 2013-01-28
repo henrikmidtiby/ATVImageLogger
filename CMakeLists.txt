@@ -1,6 +1,6 @@
 project(VisionSpray)
 cmake_minimum_required(VERSION 2.6)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMAKE_Modules/")
 find_package(Qt4 REQUIRED QtGui QtCore QtOpenGL)
 find_package(OpenCV REQUIRED)
 find_package(RT REQUIRED)
@@ -27,12 +27,10 @@ endif(USE_CAMERA) #Endif using camera
 
 if(USE_GPS) #If for GPS usage
   set(USE_RS232 1)
-  set(GPS_SRCS gpsreader.cpp libs/qtgpsc/satview.cpp) #compile the gps interface
+  set(GPS_SRCS gpsreader.cpp include/qtgpscWidget/satview.cpp) #compile the gps interface
   add_definitions(-DUSE_GPS) #Add a preprocessor define for in code checks for gps usage
   set(GPS_LIBS qextserialport)
 endif(USE_GPS)
-
-
 
 if(CalibrateSprayTime)
   add_definitions(-DCalibrateSprayTime)
@@ -46,6 +44,6 @@ include_directories(${QT_INCLUDES} ${OPENCV_INCLUDE_DIR} ${CMAKE_CURRENT_BINARY_
 qt4_automoc(${VisionSpray_SRCS} ${CAMERA_SRCS} ${GPS_SRCS})
 add_definitions(${QT_DEFINITIONS})
 add_executable(VisionSpray ${VisionSpray_SRCS} )
-target_link_libraries(VisionSpray ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTOPENGL_INCLUDE_DIR}
+target_link_libraries(VisionSpray ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
 		      ${OpenCV_LIBS} ${CAMERA_LIBS} ${RT_LIBRARIES} pthread ${QT_QTOPENGL_LIBRARY}
-		      ${OPENGL_glu_LIBRARY} GL ${GPS_LIBS})
+		      ${OPENGL_glu_LIBRARY} GL ${GPS_LIBS} qOpenGLCVWidget)
