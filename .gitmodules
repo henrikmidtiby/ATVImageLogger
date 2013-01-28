@@ -4,3 +4,6 @@
 [submodule "include/qextserialport"]
 	path = include/qextserialport
 	url = https://code.google.com/p/qextserialport/
+[submodule "include/qOpenGLCVWidget"]
+	path = include/qOpenGLCVWidget
+	url = git@github.com:Stigaard/qOpenGLCVWidget.git
