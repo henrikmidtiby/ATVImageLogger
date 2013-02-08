@@ -1,7 +1,4 @@
 #include "VisionSpray.h"
-
-
-
 #include <QtGui/QLabel>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
@@ -11,17 +8,12 @@
 
 VisionSpray::VisionSpray()
 {
-    modi = new algoritm();
+       qRegisterMetaType< cv::Mat >("cv::Mat"); 
+//    modi = new algoritm();
 #ifdef USE_CAMERA
-    this->camera = new JAI_AD080GE(CAMERA_SERIAL, JAI_AD080GE::RGB, 12.0);
-    this->camera->setROI(0,0,1024,768);
-    this->camera->setOptOut1Output(JAI_AD080GE::UserOutput0);
-    this->camera->setOptOut2Output(JAI_AD080GE::UserOutput1);
-    this->camera->setGenerator0FPS(1.0);
-    this->camera->startAquisition();
-    this->camera->setExposure(3000);
-    this->camera->setGain(6.0);
-    connect(this->camera, SIGNAL(newImage(void*)), this->modi, SLOT(newRawImage(void *)));
+       this->camera = new QTGIGE("21272795");
+     this->camera->startAquisition();
+    connect(this->camera, SIGNAL(newBayerGRImage(cv::Mat)), &dem, SLOT(newBayerGRImage(cv::Mat)), Qt::QueuedConnection);
 #endif
     
   #ifdef USE_GPS
@@ -29,26 +21,27 @@ VisionSpray::VisionSpray()
   #endif
    
 #ifdef USE_DATALOGGER
-    this->log = new dataLogger();
-    connect(this->modi->timeKeeper, SIGNAL(spray(int)), this->log, SLOT(valve1Logger(int)));
-    connect(this->modi, SIGNAL(weedAmount(float)), this->log, SLOT(weedAmountLogger(float)));
-    connect(this->modi, SIGNAL(weedPressure(float)), this->log, SLOT(weedPressureLogger(float)));
-    connect(this->modi, SIGNAL(runtime(qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64)),
-	    this->log, SLOT(runtimeLogger(qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64)));
+//    this->log = new dataLogger();
+//     connect(this->modi->timeKeeper, SIGNAL(spray(int)), this->log, SLOT(valve1Logger(int)));
+//     connect(this->modi, SIGNAL(weedAmount(float)), this->log, SLOT(weedAmountLogger(float)));
+//     connect(this->modi, SIGNAL(weedPressure(float)), this->log, SLOT(weedPressureLogger(float)));
+//     connect(this->modi, SIGNAL(runtime(qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64)),
+// 	    this->log, SLOT(runtimeLogger(qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64,qint64)));
   #ifdef USE_CAMERA
-      connect(this->camera, SIGNAL(newImage(void*)), this->log, SLOT(rawImageLogger(void*)));
-      connect(this->modi, SIGNAL(showImage(cv::Mat*)), this->log, SLOT(pngImageLogger(cv::Mat*)));      
+/*      connect(this->camera, SIGNAL(newImage(void*)), this->log, SLOT(rawImageLogger(void*)));
+      connect(this->modi, SIGNAL(showImage(cv::Mat*)), this->log, SLOT(pngImageLogger(cv::Mat*))); */     
   #endif
 
   #ifdef USE_GPS
-      connect(this->gps, SIGNAL(newGGA(QByteArray,QByteArray,char,QByteArray,char,int,int,float,float,char,QByteArray,char,float,int)),
-	      this->log, SLOT(GGALogger(QByteArray,QByteArray,char,QByteArray,char,int,int,float,float,char,QByteArray,char,float,int)));
-      connect(this->gps, SIGNAL(newNMEASentence(QByteArray,QByteArray,QList<QByteArray>)),
-	      this->log, SLOT(NMEALogger(QByteArray,QByteArray,QList<QByteArray>)));
+//       connect(this->gps, SIGNAL(newGGA(QByteArray,QByteArray,char,QByteArray,char,int,int,float,float,char,QByteArray,char,float,int)),
+// 	      this->log, SLOT(GGALogger(QByteArray,QByteArray,char,QByteArray,char,int,int,float,float,char,QByteArray,char,float,int)));
+//       connect(this->gps, SIGNAL(newNMEASentence(QByteArray,QByteArray,QList<QByteArray>)),
+// 	      this->log, SLOT(NMEALogger(QByteArray,QByteArray,QList<QByteArray>)));
   #endif
 #endif
       
     drawGui();   
+    connect(&dem, SIGNAL(newImage(cv::Mat)), view, SLOT(showImage(cv::Mat)));
      
 #ifndef USE_CAMERA
     init_CameraSimulator();
@@ -62,14 +55,15 @@ VisionSpray::VisionSpray()
       
 
 
-    connect(this->modi, SIGNAL(showImage(cv::Mat*)), this->view, SLOT(showImage(cv::Mat*)));
-    connect(Valve1Btn, SIGNAL(pressed()), this, SLOT(turnValve1On()));
-    connect(Valve1Btn, SIGNAL(released()), this, SLOT(turnValve1Off()));
-    connect(Valve1Btn, SIGNAL(pressed()), this, SLOT(turnValve2On()));
-    connect(Valve1Btn, SIGNAL(released()), this, SLOT(turnValve2Off()));
-    connect(modi, SIGNAL(nozzleOn()), this, SLOT(turnValve1On()));
-    connect(modi, SIGNAL(nozzleOff()), this, SLOT(turnValve1Off()));
-    connect(modi, SIGNAL(statusText(QString)), this->modicoviText, SLOT(setText(QString)));
+ //   connect(this->modi, SIGNAL(showImage(cv::Mat*)), this->view, SLOT(showImage(cv::Mat*)));
+//     connect(Valve1Btn, SIGNAL(pressed()), this, SLOT(turnValve1On()));
+//     connect(Valve1Btn, SIGNAL(released()), this, SLOT(turnValve1Off()));
+//     connect(Valve1Btn, SIGNAL(pressed()), this, SLOT(turnValve2On()));
+//     connect(Valve1Btn, SIGNAL(released()), this, SLOT(turnValve2Off()));
+//     connect(modi, SIGNAL(nozzleOn()), this, SLOT(turnValve1On()));
+//     connect(modi, SIGNAL(nozzleOff()), this, SLOT(turnValve1Off()));
+//     connect(modi, SIGNAL(statusText(QString)), this->modicoviText, SLOT(setText(QString)));
+    connect(cameraSettingsBtn, SIGNAL(pressed()), camera, SLOT(showCameraSettings()));
 }
 
 #ifndef USE_CAMERA
@@ -108,9 +102,10 @@ void VisionSpray::drawGui(void )
     this->view = new CQtOpenCVViewerGl(this);
     this->Valve1Btn = new QPushButton("Valve 1");
     this->Valve2Btn = new QPushButton("Valve 2");
+    this->cameraSettingsBtn = new QPushButton("Camera settings");
     this->imageSelect = new QComboBox(globalWidget);
     //connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), this, SLOT(currentViewChanged(QString)));
-    connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), modi, SLOT(imshowSelector(QString)));
+    //connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), modi, SLOT(imshowSelector(QString)));
     this->imageSelect->addItem("Input");
     this->imageSelect->addItem("Excess Green");
     this->imageSelect->addItem("Segmented");
@@ -127,6 +122,7 @@ void VisionSpray::drawGui(void )
     this->Layout->addWidget(imageSelect, 2,1);
     this->Layout->addWidget(sideWidget, 1,2);
     this->sideLayout->addWidget(Valve1Btn, 2,1);
+    this->sideLayout->addWidget(cameraSettingsBtn, 3,1);
     this->sideLayout->addWidget(modicoviText, 1,1);
 #ifdef USE_GPS
     this->drawGPSGui();
@@ -146,7 +142,7 @@ void VisionSpray::loadGPS(void )
     this, SLOT(updateSatStatus(QByteArray,QByteArray,char,QByteArray,char,int,int,float,float,char,QByteArray,char,float,int)));
     connect(this->gps, SIGNAL(newVTG(QByteArray,QByteArray,QByteArray,QByteArray,QByteArray,QByteArray,float,QByteArray)),
 	    this, SLOT(VTGReceiver(QByteArray,QByteArray,QByteArray,QByteArray,QByteArray,QByteArray,float,QByteArray)));
-    connect(this, SIGNAL(velocity(float)), this->modi, SLOT(velocityReceiver(float)));
+    //connect(this, SIGNAL(velocity(float)), this->modi, SLOT(velocityReceiver(float)));
 }
 
 void VisionSpray::drawGPSGui(void )
@@ -260,7 +256,7 @@ void VisionSpray::currentViewChanged(const QString& text)
 void VisionSpray::turnValve1Off(void )
 {
 #ifdef USE_CAMERA
-  this->camera->resetUserOutput0();
+//  this->camera->resetUserOutput0();
 #endif
 }
 
@@ -274,14 +270,14 @@ void VisionSpray::turnValve1On(void )
 void VisionSpray::turnValve2Off(void )
 {
 #ifdef USE_CAMERA
-  this->camera->resetUserOutput1();
+//  this->camera->resetUserOutput1();
 #endif
 }
 
 void VisionSpray::turnValve2On(void )
 {
 #ifdef USE_CAMERA
-  this->camera->setUserOutput1();
+//  this->camera->setUserOutput1();
 #endif
 }
 

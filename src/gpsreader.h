@@ -33,8 +33,8 @@
 #include <QtCore/QByteArrayMatcher>
 #include <qt4/QtCore/QByteArray>
 #include <QMutex>
-#include "libs/qextserialport/qextserialport.h"
-#include "libs/qtgpsc/satellite.h"
+#include "../include/qextserialport/src/qextserialport.h"
+#include "../include/qtgpscWidget/sattellite.h"
 
 class gpsReader : public QThread
 {

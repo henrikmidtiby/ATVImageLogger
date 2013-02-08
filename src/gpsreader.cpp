@@ -28,7 +28,7 @@
 
 #include "gpsreader.h"
 #include "gpsreader.moc"
-#include "libs/qextserialport/qextserialenumerator.h"
+#include "../include/qextserialport/src/qextserialenumerator.h"
 #include <QList>
 #include <QRegExp>
 #include <iostream>

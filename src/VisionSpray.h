@@ -10,19 +10,20 @@
 #include <QtGui/QLabel>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QRadioButton>
-#include <QDir>
+#include <QDir>    
 
-#include "algoritm.h"
-#include "cqtopencvviewergl.h"
+//#include "algoritm.h"
+#include "../include/qOpenGLCVWidget/qOpenGLCVWidget.h"
+#include "demosaic_cv.h"
 #ifdef USE_GPS
   #include "gpsreader.h"
-  #include "libs/qtgpsc/satview.h"
-  #include "libs/qtgpsc/satellite.h"
+  #include "../include/qtgpscWidget/satview.h"
+  #include "../include/qtgpscWidget/sattellite.h"
 #endif
 
 #ifdef USE_CAMERA
   #pragma message "Using a camera"
-  #include "jai_ad-080ge.h"
+  #include "../include/QtGigE/qtgige.h"
 #else
   #pragma message "Not using a camera"
 #endif
@@ -38,12 +39,13 @@ public:
     VisionSpray();
     virtual ~VisionSpray();
 #ifdef USE_CAMERA
-    JAI_AD080GE * camera;
+    QTGIGE * camera;
 #endif
 private:
-    algoritm * modi;
+ //   algoritm * modi;
     QPushButton * Valve1Btn;
     QPushButton * Valve2Btn;
+    QPushButton * cameraSettingsBtn;
     CQtOpenCVViewerGl * view;
     void drawGui(void);
     QGridLayout *Layout;
@@ -52,7 +54,7 @@ private:
     QWidget *sideWidget;
     QComboBox *imageSelect;
     QLabel * modicoviText;
-
+    demosaic_cv dem;
 #ifndef USE_CAMERA
     void init_CameraSimulator(void);
     QFileInfoList * simulationFiles;
