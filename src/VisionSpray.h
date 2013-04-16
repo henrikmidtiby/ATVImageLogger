@@ -15,6 +15,7 @@
 //#include "algoritm.h"
 #include "../include/qOpenGLCVWidget/qOpenGLCVWidget.h"
 #include "demosaic_cv.h"
+#include "exg_cv.h"
 #ifdef USE_GPS
   #include "gpsreader.h"
   #include "../include/qtgpscWidget/satview.h"
@@ -55,6 +56,7 @@ private:
     QComboBox *imageSelect;
     QLabel * modicoviText;
     demosaic_cv dem;
+    ExG_cv exg;
 #ifndef USE_CAMERA
     void init_CameraSimulator(void);
     QFileInfoList * simulationFiles;

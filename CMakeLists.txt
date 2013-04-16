@@ -5,6 +5,7 @@ find_package(Qt4 REQUIRED QtGui QtCore QtOpenGL)
 find_package(OpenCV REQUIRED)
 find_package(RT REQUIRED)
 find_package(OpenGL REQUIRED)
+set(EMULATE_CAMERA 1)
 set(USE_CAMERA 1) #If compiling for using a camera
 set(USE_GPS 0) #If compiling for using a GPS
 set(USE_DATALOGGER 0) #If compiling with datalogging
@@ -17,6 +18,10 @@ if(PROFILE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pg")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
 endif(PROFILE)
+
+if(EMULATE_CAMERA)
+  add_definitions(-DEMULATE_CAMERA)
+endif(EMULATE_CAMERA)
 
 if(USE_CAMERA) #If for camera usage
 #  set(CAMERA_SRCS jai_ad-080ge.cc) #Compile the camera interface

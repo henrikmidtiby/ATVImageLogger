@@ -10,3 +10,6 @@
 [submodule "include/qtgpscWidget"]
 	path = include/qtgpscWidget
 	url = git@github.com:Stigaard/qtgpscWidget.git
+[submodule "include/modicovi-rt"]
+	path = include/modicovi-rt
+	url = git@bitbucket.org:Stigaard/modicovi-rt.git

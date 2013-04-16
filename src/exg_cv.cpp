@@ -1,6 +1,6 @@
 /*
     <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) 2012  <copyright holder> <email>
+    Copyright (C) 2013  Morten Stigaard Laursen <email>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,49 +17,26 @@
 */
 
 
-#include "demosaic_cv.h"
-#include "../include/QtGigE/qtgige.h"
-#include <unistd.h>
-#include <sys/syscall.h>
-#include <sys/types.h>
-#include <qcache.h>
-#include <qt4/QtCore/QString>
+#include "exg_cv.h"
+#include "exg_cv.moc"
 
-#include "demosaic_cv.moc"
-demosaic_cv::demosaic_cv(void )
+ExG_cv::ExG_cv(void ): QThread()
 {
-  updateptimer = false;
   abort = false;
   this->start();
 }
 
-demosaic_cv::~demosaic_cv()
+ExG_cv::~ExG_cv()
 {
   abort = true;
   this->msleep(300);
 }
 
-
-void demosaic_cv::setptimer(itimerval timer)
-{
-  setitimer(ITIMER_PROF, &timer, NULL);
-  ptimer = timer;
-  updateptimer = true;
-}
-
-
-void demosaic_cv::run()
+void ExG_cv::run()
 {
   int i =0;
-  this->msleep(400);
-  std::cout << "DEMOSAIC TID:" << syscall(SYS_gettid) << std::endl << std::flush;
   while(abort==false)
   {
-    if(updateptimer)
-    {
-      setitimer(ITIMER_PROF, &ptimer, NULL);
-      updateptimer = false;
-    }
     bool cont = false;
     while(cont == false)
     {
@@ -68,18 +45,29 @@ void demosaic_cv::run()
 	return;
     }
     cv::Mat img = Imgs.dequeue();
-    cv::Mat rgb;
-    cv::Mat BayerGR8;
-    //img.convertTo(BayerGR8, BayerGR8.type(), 1.0/256.0);
-    QTGIGE::convert16to8bit(img, BayerGR8);
+    cv::Mat exg;
 //    QString fname("Img_" + QString::number(i++) + ".png");
 //    cv::imwrite(fname.toLocal8Bit().constData(), BayerGR8);
-    cv::cvtColor(BayerGR8, rgb, CV_BayerGB2BGR);
-    emit(newImage(rgb));    
+    BayerGR16ToExG(img, exg);
+    emit(newImage(exg));    
   }
 }
 
-void demosaic_cv::newBayerGRImage(cv::Mat img)
+void ExG_cv::BayerGR16ToExG(cv::InputArray in, cv::OutputArray out)
+{
+#pragma message BayerGR16ToExG only outputs raw bayer as exg now needs rewrite
+  uint16_t * in_ = (uint16_t*)in.getMat().ptr();
+  cv::Mat tmp_out(in.getMat().size().height, in.getMat().size().width, cv::DataType<uint8_t>::type);
+  uint8_t * out_ = tmp_out.ptr();
+  uint16_t * end = in_ + (in.getMat().size().height * in.getMat().size().width);
+  while(in_!=end)
+  {
+    *out_++ = (*in_++)>>8;
+  }
+  tmp_out.copyTo(out);
+}
+
+void ExG_cv::newBayerGRImage(cv::Mat img)
 {
   Imgs.enqueue(img);
   semImg.release(1);
