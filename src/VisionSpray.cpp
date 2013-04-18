@@ -13,7 +13,7 @@ VisionSpray::VisionSpray()
 #ifdef USE_CAMERA
        this->camera = new QTGIGE("Basler-21272795");
      this->camera->startAquisition();
-    connect(this->camera, SIGNAL(newBayerGRImage(cv::Mat)), &exg, SLOT(newBayerGRImage(cv::Mat)), Qt::QueuedConnection);
+    connect(this->camera, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exg, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
 #endif
     
   #ifdef USE_GPS
@@ -41,7 +41,7 @@ VisionSpray::VisionSpray()
 #endif
       
     drawGui();   
-    connect(&exg, SIGNAL(newImage(cv::Mat)), view, SLOT(showImage(cv::Mat)));
+    connect(&exg, SIGNAL(newImage(cv::Mat, qint64)), view, SLOT(showImage(cv::Mat, qint64)));
      
 #ifndef USE_CAMERA
     init_CameraSimulator();

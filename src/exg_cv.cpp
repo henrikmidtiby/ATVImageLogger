@@ -45,11 +45,12 @@ void ExG_cv::run()
 	return;
     }
     cv::Mat img = Imgs.dequeue();
+    qint64 timestamp = timestamps.dequeue();
     cv::Mat exg;
 //    QString fname("Img_" + QString::number(i++) + ".png");
 //    cv::imwrite(fname.toLocal8Bit().constData(), BayerGR8);
     BayerGR16ToExG(img, exg);
-    emit(newImage(exg));    
+    emit(newImage(exg, timestamp));    
   }
 }
 
@@ -122,8 +123,9 @@ void ExG_cv::BayerGR16ToExG(cv::InputArray in, cv::OutputArray out)
   tmp_out.copyTo(out);
 }
 
-void ExG_cv::newBayerGRImage(cv::Mat img)
+void ExG_cv::newBayerGRImage(cv::Mat img, qint64 timestampus)
 {
   Imgs.enqueue(img);
+  timestamps.enqueue(timestampus);
   semImg.release(1);
 }
