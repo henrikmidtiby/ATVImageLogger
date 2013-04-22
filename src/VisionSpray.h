@@ -15,18 +15,15 @@
 //#include "algoritm.h"
 #include "../include/qOpenGLCVWidget/qOpenGLCVWidget.h"
 #include "demosaic_cv.h"
-#include "exg_cv.h"
+#include "../include/BayerExG/exg_cv.h"
 #ifdef USE_GPS
   #include "gpsreader.h"
-  #include "../include/qtgpscWidget/satview.h"
-  #include "../include/qtgpscWidget/sattellite.h"
+  #include "../include/qtgpscWidget/gpswidget.h"
 #endif
 
 #ifdef USE_CAMERA
   #pragma message "Using a camera"
   #include "../include/QtGigE/qtgige.h"
-#else
-  #pragma message "Not using a camera"
 #endif
 
 #ifdef USE_DATALOGGER
@@ -57,11 +54,6 @@ private:
     QLabel * modicoviText;
     demosaic_cv dem;
     ExG_cv exg;
-#ifndef USE_CAMERA
-    void init_CameraSimulator(void);
-    QFileInfoList * simulationFiles;
-    int fileptr;
-#endif
     
 #ifdef USE_DATALOGGER
     dataLogger * log;
@@ -70,14 +62,14 @@ private:
 #ifdef USE_GPS
     void loadGPS(void);
     gpsReader * gps;
-    QWidget *gpsWidget;
-    SatView *satWidget;
-    QButtonGroup *gpsQuality;
-    QRadioButton *gpsQualityInvalid, *gpsQualityGPSFix, *gpsQualityDGPSFix, *gpsQualityPPSFix,
-                 *gpsQualityRTKFix, *gpsQualityFRTKFix, *gpsQualityEstimated, *gpsQualityManual,
-                 *gpsQualitySimulation;
-    QGridLayout *gpsLayout;
-    void drawGPSGui(void);
+    gpsWidget *gpswidget;
+//     SatView *satWidget;
+//     QButtonGroup *gpsQuality;
+//     QRadioButton *gpsQualityInvalid, *gpsQualityGPSFix, *gpsQualityDGPSFix, *gpsQualityPPSFix,
+//                  *gpsQualityRTKFix, *gpsQualityFRTKFix, *gpsQualityEstimated, *gpsQualityManual,
+//                  *gpsQualitySimulation;
+//     QGridLayout *gpsLayout;
+//     void drawGPSGui(void);
 #endif
 private slots:
     void turnValve1On(void);
@@ -89,22 +81,18 @@ private slots:
     void cameraSimulator(void);
 #endif
 #ifdef USE_GPS
-    void updateSatlist(SatList sats);
-    void updateSatStatus(QByteArray time, QByteArray latitude, char latitudeHeading, 
-              QByteArray longitude, char longitudeHeading, int GPSQuality, 
-              int sattelitesInView, float horizontalDilution, float altitude,
-              char altitudeUnit, QByteArray geoidalSeperation, char geoidalSeperationUnit,
-              float dGPSAge, int dGPSStation);
-    void VTGReceiver(QByteArray trackMadeGood, QByteArray trackMadeGoodIndicator,
-	      QByteArray MagneticTrackMadeGood, QByteArray MagneticTrackMadeGoodIndicator,
-	      QByteArray GroundSpeedInKnots, QByteArray GroundSpeedInKnotsUnit,
-	      float GroundSpeedInKmh, QByteArray GroundSpeedInKmhUnit);
-signals:
-    void velocity(float kmh);
-#endif
-#ifndef USE_CAMERA
-signals:
-    void newSimulatedImage( cv::Mat *image );
+//     void updateSatlist(SatList sats);
+//     void updateSatStatus(QByteArray time, QByteArray latitude, char latitudeHeading, 
+//               QByteArray longitude, char longitudeHeading, int GPSQuality, 
+//               int sattelitesInView, float horizontalDilution, float altitude,
+//               char altitudeUnit, QByteArray geoidalSeperation, char geoidalSeperationUnit,
+//               float dGPSAge, int dGPSStation);
+//     void VTGReceiver(QByteArray trackMadeGood, QByteArray trackMadeGoodIndicator,
+// 	      QByteArray MagneticTrackMadeGood, QByteArray MagneticTrackMadeGoodIndicator,
+// 	      QByteArray GroundSpeedInKnots, QByteArray GroundSpeedInKnotsUnit,
+// 	      float GroundSpeedInKmh, QByteArray GroundSpeedInKmhUnit);
+// signals:
+//     void velocity(float kmh);
 #endif
 };
 

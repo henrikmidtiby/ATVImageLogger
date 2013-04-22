@@ -30,12 +30,7 @@ if(USE_CAMERA) #If for camera usage
   add_definitions(-DCAMERA_SERIAL="X800453")
 endif(USE_CAMERA) #Endif using camera
 
-if(USE_GPS) #If for GPS usage
-  set(USE_RS232 1)
-  set(GPS_SRCS gpsreader.cpp include/qtgpscWidget/satview.cpp) #compile the gps interface
-  add_definitions(-DUSE_GPS) #Add a preprocessor define for in code checks for gps usage
-  #set(GPS_LIBS qextserialport)
-endif(USE_GPS)
+
 
 if(CalibrateSprayTime)
   add_definitions(-DCalibrateSprayTime)
@@ -51,4 +46,4 @@ add_definitions(${QT_DEFINITIONS})
 add_executable(VisionSpray ${VisionSpray_SRCS} )
 target_link_libraries(VisionSpray ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
 		      ${OpenCV_LIBS} ${CAMERA_LIBS} ${RT_LIBRARIES} pthread ${QT_QTOPENGL_LIBRARY}
-		      ${OPENGL_glu_LIBRARY} GL ${GPS_LIBS} qOpenGLCVWidget QtGigE qtgpscWidget ${qextserialport_LIBRARY})
+		      ${OPENGL_glu_LIBRARY} GL ${GPS_LIBS} qOpenGLCVWidget QtGigE qtgpscWidget BayerExG gpsReader)
