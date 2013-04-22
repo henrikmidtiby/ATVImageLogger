@@ -12,7 +12,6 @@
 #include <QtGui/QRadioButton>
 #include <QDir>    
 
-//#include "algoritm.h"
 #include "../include/qOpenGLCVWidget/qOpenGLCVWidget.h"
 #include "demosaic_cv.h"
 #include "../include/BayerExG/exg_cv.h"
@@ -40,7 +39,6 @@ public:
     QTGIGE * camera;
 #endif
 private:
- //   algoritm * modi;
     QPushButton * Valve1Btn;
     QPushButton * Valve2Btn;
     QPushButton * cameraSettingsBtn;
@@ -55,45 +53,13 @@ private:
     demosaic_cv dem;
     ExG_cv exg;
     
-#ifdef USE_DATALOGGER
-    dataLogger * log;
-#endif
-    
 #ifdef USE_GPS
     void loadGPS(void);
     gpsReader * gps;
     gpsWidget *gpswidget;
-//     SatView *satWidget;
-//     QButtonGroup *gpsQuality;
-//     QRadioButton *gpsQualityInvalid, *gpsQualityGPSFix, *gpsQualityDGPSFix, *gpsQualityPPSFix,
-//                  *gpsQualityRTKFix, *gpsQualityFRTKFix, *gpsQualityEstimated, *gpsQualityManual,
-//                  *gpsQualitySimulation;
-//     QGridLayout *gpsLayout;
-//     void drawGPSGui(void);
 #endif
 private slots:
-    void turnValve1On(void);
-    void turnValve1Off(void);
-    void turnValve2On(void);
-    void turnValve2Off(void);
     void currentViewChanged ( const QString & text );
-#ifndef USE_CAMERA
-    void cameraSimulator(void);
-#endif
-#ifdef USE_GPS
-//     void updateSatlist(SatList sats);
-//     void updateSatStatus(QByteArray time, QByteArray latitude, char latitudeHeading, 
-//               QByteArray longitude, char longitudeHeading, int GPSQuality, 
-//               int sattelitesInView, float horizontalDilution, float altitude,
-//               char altitudeUnit, QByteArray geoidalSeperation, char geoidalSeperationUnit,
-//               float dGPSAge, int dGPSStation);
-//     void VTGReceiver(QByteArray trackMadeGood, QByteArray trackMadeGoodIndicator,
-// 	      QByteArray MagneticTrackMadeGood, QByteArray MagneticTrackMadeGoodIndicator,
-// 	      QByteArray GroundSpeedInKnots, QByteArray GroundSpeedInKnotsUnit,
-// 	      float GroundSpeedInKmh, QByteArray GroundSpeedInKmhUnit);
-// signals:
-//     void velocity(float kmh);
-#endif
 };
 
 #endif // VisionSpray_H
