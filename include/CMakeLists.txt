@@ -7,6 +7,7 @@ add_subdirectory(qtgpscWidget)
 add_subdirectory(BayerExG)
 add_subdirectory(gpsReader)
 #add_subdirectory(modicovi-rt)
+add_subdirectory(LoggerModule)
 
 #qextserialport
 set(qextserialport_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/qextserialport/libqextserialport.a PARENT_SCOPE)
