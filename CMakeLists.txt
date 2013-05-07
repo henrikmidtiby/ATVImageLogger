@@ -1,4 +1,4 @@
-project(VisionSpray)
+project(ATVImageLogger)
 cmake_minimum_required(VERSION 2.6)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMAKE_Modules/")
 find_package(Qt4 REQUIRED QtGui QtCore QtOpenGL)
@@ -43,8 +43,8 @@ include_directories(${QT_INCLUDES} ${OPENCV_INCLUDE_DIR} ${CMAKE_CURRENT_BINARY_
 
 qt4_automoc(${VisionSpray_SRCS} ${CAMERA_SRCS} ${GPS_SRCS})
 add_definitions(${QT_DEFINITIONS})
-add_executable(VisionSpray ${VisionSpray_SRCS} )
-target_link_libraries(VisionSpray ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
+add_executable(ATVImageLogger ${VisionSpray_SRCS} )
+target_link_libraries(ATVImageLogger ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
 		      ${OpenCV_LIBS} ${CAMERA_LIBS} ${RT_LIBRARIES} pthread ${QT_QTOPENGL_LIBRARY}
 		      ${OPENGL_glu_LIBRARY} GL ${GPS_LIBS} qOpenGLCVWidget QtGigE qtgpscWidget BayerExG gpsReader ${qextserialport_LIBRARY}
 		      DataLogger LoggerModule)
