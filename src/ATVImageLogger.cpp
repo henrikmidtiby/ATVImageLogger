@@ -1,4 +1,4 @@
-#include "VisionSpray.h"
+#include "ATVImageLogger.h"
 #include <QtGui/QLabel>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
@@ -6,7 +6,7 @@
 #include <QApplication>
 #include <QTimer>
 
-VisionSpray::VisionSpray()
+ATVImageLogger::ATVImageLogger()
 {
        qRegisterMetaType< cv::Mat >("cv::Mat"); 
 #ifdef USE_CAMERA
@@ -25,7 +25,7 @@ VisionSpray::VisionSpray()
     connect(cameraSettingsBtn, SIGNAL(pressed()), camera, SLOT(showCameraSettings()));
 }
 
-void VisionSpray::drawGui(void )
+void ATVImageLogger::drawGui(void )
 {
     this->globalWidget = new QWidget(this);
     this->Layout = new QGridLayout(this->globalWidget);
@@ -64,13 +64,13 @@ void VisionSpray::drawGui(void )
     setCentralWidget(this->globalWidget);
 }
 
-void VisionSpray::currentViewChanged(const QString& text)
+void ATVImageLogger::currentViewChanged(const QString& text)
 {
   std::cout << "Received new view " << text.toLocal8Bit().data() << std::endl;
   disconnect(this->view, SLOT(showImage(cv::Mat*)));
 }
 
-VisionSpray::~VisionSpray()
+ATVImageLogger::~ATVImageLogger()
 {}
 
-#include "VisionSpray.moc"
+#include "ATVImageLogger.moc"

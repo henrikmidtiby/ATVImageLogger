@@ -1,5 +1,5 @@
-#ifndef VisionSpray_H
-#define VisionSpray_H
+#ifndef ATVImageLogger_H
+#define ATVImageLogger_H
 
 
 #include <QtGui/QMainWindow>
@@ -30,12 +30,12 @@
 #endif
 #include "../include/LoggerModule/loggermodule.h"
 
-class VisionSpray : public QMainWindow
+class ATVImageLogger : public QMainWindow
 {
 Q_OBJECT
 public:
-    VisionSpray();
-    virtual ~VisionSpray();
+    ATVImageLogger();
+    virtual ~ATVImageLogger();
 #ifdef USE_CAMERA
     QTGIGE * camera;
 #endif
@@ -63,4 +63,4 @@ private slots:
     void currentViewChanged ( const QString & text );
 };
 
-#endif // VisionSpray_H
+#endif // ATVImageLogger_H
