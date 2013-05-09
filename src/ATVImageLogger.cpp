@@ -42,11 +42,7 @@ void ATVImageLogger::drawGui(void )
     //connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), modi, SLOT(imshowSelector(QString)));
     this->imageSelect->addItem("Input");
     this->imageSelect->addItem("Excess Green");
-    this->imageSelect->addItem("Segmented");
-    this->imageSelect->addItem("Segmented Morphology");
-    this->imageSelect->addItem("Symmetry kernel magnitude");
-    this->imageSelect->addItem("Symmetry kernel threshold");
-    this->imageSelect->addItem("Edges thinned");
+    this->imageSelect->addItem("Color");
     this->modicoviText = new QLabel("Modicovi Score:");
     this->sideWidget = new QWidget(globalWidget);
     this->sideLayout = new QGridLayout(this->sideWidget);
