@@ -21,6 +21,7 @@
   #include "../include/LoggerModule/datalogger.h"
 #endif
 #include "../include/LoggerModule/loggermodule.h"
+#include "../include/LoggerModule/imagelogger.h"
 
 class ATVImageLogger : public QMainWindow
 {
@@ -46,6 +47,8 @@ private:
     demosaic_cv dem;
     ExG_cv exgOne;
     ExG_cv exgTwo;
+    ImageLogger * loggerOne;
+    ImageLogger * loggerTwo;
     
 private slots:
     void currentViewChanged ( const QString & text );

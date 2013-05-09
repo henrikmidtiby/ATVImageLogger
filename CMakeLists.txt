@@ -38,4 +38,4 @@ add_executable(ATVImageLogger ${VisionSpray_SRCS} )
 target_link_libraries(ATVImageLogger ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
 		      ${OpenCV_LIBS} ${CAMERA_LIBS} ${RT_LIBRARIES} pthread ${QT_QTOPENGL_LIBRARY}
 		      ${OPENGL_glu_LIBRARY} GL ${GPS_LIBS} qOpenGLCVWidget QtGigE qtgpscWidget BayerExG gpsReader ${qextserialport_LIBRARY}
-		      DataLogger LoggerModule)
+		      LoggerModule ImageLogger)

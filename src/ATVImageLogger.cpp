@@ -18,9 +18,19 @@ ATVImageLogger::ATVImageLogger()
     this->cameraOne->startAquisition();
     this->cameraTwo->startAquisition();
     
-    // Connect cameras with the rest of the system
+    // Connect cameras with the gui
     connect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgOne, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
     connect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgTwo, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
+
+    // Initialize logger modules
+    // Henrik: If the following line is not active a linker error is thrown ...
+    LoggerModule test("../Logging", "Tester");
+    this->loggerOne = new ImageLogger("../Logging", "CameraOne");
+    this->loggerTwo = new ImageLogger("../Logging", "CameraTwo");
+    
+    // Connect cameras with the logging system
+    connect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), loggerOne, SLOT(burstImageLogger(cv::Mat, qint64)), Qt::QueuedConnection);
+    connect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), loggerTwo, SLOT(burstImageLogger(cv::Mat, qint64)), Qt::QueuedConnection);
 
     drawGui();
     connect(&exgOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
