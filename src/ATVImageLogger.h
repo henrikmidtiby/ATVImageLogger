@@ -49,6 +49,7 @@ private:
     
 private slots:
     void currentViewChanged ( const QString & text );
+    void imshowSelectorChanged(QString text);
 };
 
 #endif // ATVImageLogger_H

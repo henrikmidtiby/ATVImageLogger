@@ -39,7 +39,7 @@ void ATVImageLogger::drawGui(void )
     this->cameraSettingsBtn = new QPushButton("Camera settings");
     this->imageSelect = new QComboBox(globalWidget);
     //connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), this, SLOT(currentViewChanged(QString)));
-    //connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), modi, SLOT(imshowSelector(QString)));
+    connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), this, SLOT(imshowSelectorChanged(QString)));
     this->imageSelect->addItem("Input");
     this->imageSelect->addItem("Excess Green");
     this->imageSelect->addItem("Color");
@@ -66,6 +66,11 @@ void ATVImageLogger::currentViewChanged(const QString& text)
 {
     std::cout << "Received new view " << text.toLocal8Bit().data() << std::endl;
     disconnect(this->viewOne, SLOT(showImage(cv::Mat*)));
+}
+
+void ATVImageLogger::imshowSelectorChanged(QString text)
+{
+    std::cout << "<imshowSelectorChanged(" << text.toLocal8Bit().data() << ")>" << std::endl;
 }
 
 ATVImageLogger::~ATVImageLogger()
