@@ -32,8 +32,7 @@ public:
     QTGIGE * cameraOne;
     QTGIGE * cameraTwo;
 private:
-    QPushButton * Valve1Btn;
-    QPushButton * Valve2Btn;
+    QPushButton * LogBurstBtn;
     QPushButton * cameraSettingsBtn;
     CQtOpenCVViewerGl * viewOne;
     CQtOpenCVViewerGl * viewTwo;

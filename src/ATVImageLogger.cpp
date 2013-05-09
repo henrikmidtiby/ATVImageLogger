@@ -44,8 +44,9 @@ void ATVImageLogger::drawGui(void )
     this->Layout = new QGridLayout(this->globalWidget);
     this->viewOne = new CQtOpenCVViewerGl(this);
     this->viewTwo = new CQtOpenCVViewerGl(this);
-    this->Valve1Btn = new QPushButton("Valve 1");
-    this->Valve2Btn = new QPushButton("Valve 2");
+    this->LogBurstBtn = new QPushButton("Log image burst");
+    connect(this->LogBurstBtn, SIGNAL(pressed()), loggerOne, SLOT(saveImageBurst()));
+    connect(this->LogBurstBtn, SIGNAL(pressed()), loggerTwo, SLOT(saveImageBurst()));
     this->cameraSettingsBtn = new QPushButton("Camera settings");
     this->imageSelect = new QComboBox(globalWidget);
     //connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), this, SLOT(currentViewChanged(QString)));
@@ -64,7 +65,7 @@ void ATVImageLogger::drawGui(void )
     this->Layout->addWidget(viewTwo, 2,1);
     this->Layout->addWidget(imageSelect, 3,1);
     this->Layout->addWidget(sideWidget, 1,2);
-    this->sideLayout->addWidget(Valve1Btn, 2,1);
+    this->sideLayout->addWidget(LogBurstBtn, 2,1);
     this->sideLayout->addWidget(cameraSettingsBtn, 3,1);
     this->sideLayout->addWidget(modicoviText, 1,1);
     this->sideWidget->setLayout(this->sideLayout);
