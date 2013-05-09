@@ -8,16 +8,16 @@
 
 ATVImageLogger::ATVImageLogger()
 {
-       qRegisterMetaType< cv::Mat >("cv::Mat"); 
+    qRegisterMetaType< cv::Mat >("cv::Mat");
 #ifdef USE_CAMERA
-     this->camera = new QTGIGE("Basler-21272795");
-     this->camera->startAquisition();
-     connect(this->camera, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exg, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
+    this->camera = new QTGIGE("Basler-21272795");
+    this->camera->startAquisition();
+    connect(this->camera, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exg, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
 #endif
-    
-    drawGui();   
+
+    drawGui();
     connect(&exg, SIGNAL(newImage(cv::Mat, qint64)), view, SLOT(showImage(cv::Mat, qint64)));
-    
+
     connect(cameraSettingsBtn, SIGNAL(pressed()), camera, SLOT(showCameraSettings()));
 }
 
@@ -57,8 +57,8 @@ void ATVImageLogger::drawGui(void )
 
 void ATVImageLogger::currentViewChanged(const QString& text)
 {
-  std::cout << "Received new view " << text.toLocal8Bit().data() << std::endl;
-  disconnect(this->view, SLOT(showImage(cv::Mat*)));
+    std::cout << "Received new view " << text.toLocal8Bit().data() << std::endl;
+    disconnect(this->view, SLOT(showImage(cv::Mat*)));
 }
 
 ATVImageLogger::~ATVImageLogger()
