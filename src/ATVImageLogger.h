@@ -15,11 +15,7 @@
 #include "../include/qOpenGLCVWidget/qOpenGLCVWidget.h"
 #include "demosaic_cv.h"
 #include "../include/BayerExG/exg_cv.h"
-
-#ifdef USE_CAMERA
-  #pragma message "Using a camera"
-  #include "../include/QtGigE/qtgige.h"
-#endif
+#include "../include/QtGigE/qtgige.h"
 
 #ifdef USE_DATALOGGER
   #include "../include/LoggerModule/datalogger.h"
@@ -32,9 +28,7 @@ Q_OBJECT
 public:
     ATVImageLogger();
     virtual ~ATVImageLogger();
-#ifdef USE_CAMERA
     QTGIGE * camera;
-#endif
 private:
     QPushButton * Valve1Btn;
     QPushButton * Valve2Btn;

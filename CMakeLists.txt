@@ -6,7 +6,6 @@ find_package(OpenCV REQUIRED)
 find_package(RT REQUIRED)
 find_package(OpenGL REQUIRED)
 set(EMULATE_CAMERA 1)
-set(USE_CAMERA 1) #If compiling for using a camera
 set(USE_GPS 0) #If compiling for using a GPS
 set(USE_DATALOGGER 0) #If compiling with datalogging
 set(CalibrateSprayTime 0) #If compiling for spray calibration
@@ -22,14 +21,6 @@ endif(PROFILE)
 if(EMULATE_CAMERA)
   add_definitions(-DEMULATE_CAMERA)
 endif(EMULATE_CAMERA)
-
-if(USE_CAMERA) #If for camera usage
-#  set(CAMERA_SRCS jai_ad-080ge.cc) #Compile the camera interface
-  add_definitions(-DUSE_CAMERA) #Add a preprocessor define for in_code checks for camera usage
-#  set(CAMERA_LIBS JAIFactory)
-  add_definitions(-DCAMERA_SERIAL="X800453")
-endif(USE_CAMERA) #Endif using camera
-
 
 
 if(CalibrateSprayTime)
