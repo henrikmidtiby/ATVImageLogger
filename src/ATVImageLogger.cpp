@@ -40,34 +40,43 @@ ATVImageLogger::ATVImageLogger()
 
 void ATVImageLogger::drawGui(void )
 {
-    this->globalWidget = new QWidget(this);
-    this->Layout = new QGridLayout(this->globalWidget);
+    // Create camera views
     this->viewOne = new CQtOpenCVViewerGl(this);
     this->viewTwo = new CQtOpenCVViewerGl(this);
+    this->viewOne->setMinimumHeight(400);
+    this->viewOne->setMinimumWidth(1024);
+    this->viewTwo->setMinimumHeight(400);
+    this->viewTwo->setMinimumWidth(1024);
+    
+    // Create button for activating burst loggers
     this->LogBurstBtn = new QPushButton("Log image burst");
     connect(this->LogBurstBtn, SIGNAL(pressed()), loggerOne, SLOT(saveImageBurst()));
     connect(this->LogBurstBtn, SIGNAL(pressed()), loggerTwo, SLOT(saveImageBurst()));
-    this->cameraSettingsBtn = new QPushButton("Camera settings");
+
+    // Create combobox for selecting which image to show
     this->imageSelect = new QComboBox(globalWidget);
     //connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), this, SLOT(currentViewChanged(QString)));
     connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), this, SLOT(imshowSelectorChanged(QString)));
     this->imageSelect->addItem("Input");
     this->imageSelect->addItem("Excess Green");
     this->imageSelect->addItem("Color");
+
+    // Create other gui elements
+    this->cameraSettingsBtn = new QPushButton("Camera settings");
     this->modicoviText = new QLabel("Modicovi Score:");
+    
+    // Define placement of gui elements
+    this->globalWidget = new QWidget(this);
+    this->Layout = new QGridLayout(this->globalWidget);
     this->sideWidget = new QWidget(globalWidget);
     this->sideLayout = new QGridLayout(this->sideWidget);
-    this->viewOne->setMinimumHeight(400);
-    this->viewOne->setMinimumWidth(1024);
-    this->viewTwo->setMinimumHeight(400);
-    this->viewTwo->setMinimumWidth(1024);
     this->Layout->addWidget(viewOne, 1,1);
     this->Layout->addWidget(viewTwo, 2,1);
     this->Layout->addWidget(imageSelect, 3,1);
     this->Layout->addWidget(sideWidget, 1,2);
+    this->sideLayout->addWidget(modicoviText, 1,1);
     this->sideLayout->addWidget(LogBurstBtn, 2,1);
     this->sideLayout->addWidget(cameraSettingsBtn, 3,1);
-    this->sideLayout->addWidget(modicoviText, 1,1);
     this->sideWidget->setLayout(this->sideLayout);
     this->globalWidget->setLayout(this->Layout);
     setCentralWidget(this->globalWidget);
