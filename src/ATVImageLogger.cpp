@@ -15,10 +15,6 @@ ATVImageLogger::ATVImageLogger()
      connect(this->camera, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exg, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
 #endif
     
-  #ifdef USE_GPS
-      this->gps = new gpsReader();
-  #endif
-         
     drawGui();   
     connect(&exg, SIGNAL(newImage(cv::Mat, qint64)), view, SLOT(showImage(cv::Mat, qint64)));
     
@@ -54,11 +50,6 @@ void ATVImageLogger::drawGui(void )
     this->sideLayout->addWidget(Valve1Btn, 2,1);
     this->sideLayout->addWidget(cameraSettingsBtn, 3,1);
     this->sideLayout->addWidget(modicoviText, 1,1);
-#ifdef USE_GPS
-//     this->drawGPSGui();
-    this->gpswidget = new gpsWidget(gps);
-    this->Layout->addWidget(gpswidget, 1,3);
-#endif
     this->sideWidget->setLayout(this->sideLayout);
     this->globalWidget->setLayout(this->Layout);
     setCentralWidget(this->globalWidget);

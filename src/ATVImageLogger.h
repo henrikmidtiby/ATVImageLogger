@@ -15,10 +15,6 @@
 #include "../include/qOpenGLCVWidget/qOpenGLCVWidget.h"
 #include "demosaic_cv.h"
 #include "../include/BayerExG/exg_cv.h"
-#ifdef USE_GPS
-  #include "gpsreader.h"
-  #include "../include/qtgpscWidget/gpswidget.h"
-#endif
 
 #ifdef USE_CAMERA
   #pragma message "Using a camera"
@@ -54,11 +50,6 @@ private:
     demosaic_cv dem;
     ExG_cv exg;
     
-#ifdef USE_GPS
-    void loadGPS(void);
-    gpsReader * gps;
-    gpsWidget *gpswidget;
-#endif
 private slots:
     void currentViewChanged ( const QString & text );
 };
