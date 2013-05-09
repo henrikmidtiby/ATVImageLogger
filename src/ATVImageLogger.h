@@ -28,12 +28,14 @@ Q_OBJECT
 public:
     ATVImageLogger();
     virtual ~ATVImageLogger();
-    QTGIGE * camera;
+    QTGIGE * cameraOne;
+    QTGIGE * cameraTwo;
 private:
     QPushButton * Valve1Btn;
     QPushButton * Valve2Btn;
     QPushButton * cameraSettingsBtn;
-    CQtOpenCVViewerGl * view;
+    CQtOpenCVViewerGl * viewOne;
+    CQtOpenCVViewerGl * viewTwo;
     void drawGui(void);
     QGridLayout *Layout;
     QGridLayout *sideLayout;
@@ -42,7 +44,8 @@ private:
     QComboBox *imageSelect;
     QLabel * modicoviText;
     demosaic_cv dem;
-    ExG_cv exg;
+    ExG_cv exgOne;
+    ExG_cv exgTwo;
     
 private slots:
     void currentViewChanged ( const QString & text );

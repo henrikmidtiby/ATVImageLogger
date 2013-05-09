@@ -9,20 +9,31 @@
 ATVImageLogger::ATVImageLogger()
 {
     qRegisterMetaType< cv::Mat >("cv::Mat");
-    this->camera = new QTGIGE("Basler-21272795");
-    this->camera->startAquisition();
-    connect(this->camera, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exg, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
+    
+    // Initialize cameras
+    this->cameraOne = new QTGIGE("Basler-21272795");
+    this->cameraTwo = new QTGIGE("Basler-21272796");
+    
+    // Start image acquisition
+    this->cameraOne->startAquisition();
+    this->cameraTwo->startAquisition();
+    
+    // Connect cameras with the rest of the system
+    connect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgOne, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
+    connect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgTwo, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
 
     drawGui();
-    connect(&exg, SIGNAL(newImage(cv::Mat, qint64)), view, SLOT(showImage(cv::Mat, qint64)));
-    connect(cameraSettingsBtn, SIGNAL(pressed()), camera, SLOT(showCameraSettings()));
+    connect(&exgOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
+    connect(&exgTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
+    connect(cameraSettingsBtn, SIGNAL(pressed()), cameraOne, SLOT(showCameraSettings()));
 }
 
 void ATVImageLogger::drawGui(void )
 {
     this->globalWidget = new QWidget(this);
     this->Layout = new QGridLayout(this->globalWidget);
-    this->view = new CQtOpenCVViewerGl(this);
+    this->viewOne = new CQtOpenCVViewerGl(this);
+    this->viewTwo = new CQtOpenCVViewerGl(this);
     this->Valve1Btn = new QPushButton("Valve 1");
     this->Valve2Btn = new QPushButton("Valve 2");
     this->cameraSettingsBtn = new QPushButton("Camera settings");
@@ -39,10 +50,13 @@ void ATVImageLogger::drawGui(void )
     this->modicoviText = new QLabel("Modicovi Score:");
     this->sideWidget = new QWidget(globalWidget);
     this->sideLayout = new QGridLayout(this->sideWidget);
-    this->view->setMinimumHeight(768);
-    this->view->setMinimumWidth(1024);
-    this->Layout->addWidget(view, 1,1);
-    this->Layout->addWidget(imageSelect, 2,1);
+    this->viewOne->setMinimumHeight(400);
+    this->viewOne->setMinimumWidth(1024);
+    this->viewTwo->setMinimumHeight(400);
+    this->viewTwo->setMinimumWidth(1024);
+    this->Layout->addWidget(viewOne, 1,1);
+    this->Layout->addWidget(viewTwo, 2,1);
+    this->Layout->addWidget(imageSelect, 3,1);
     this->Layout->addWidget(sideWidget, 1,2);
     this->sideLayout->addWidget(Valve1Btn, 2,1);
     this->sideLayout->addWidget(cameraSettingsBtn, 3,1);
@@ -55,7 +69,7 @@ void ATVImageLogger::drawGui(void )
 void ATVImageLogger::currentViewChanged(const QString& text)
 {
     std::cout << "Received new view " << text.toLocal8Bit().data() << std::endl;
-    disconnect(this->view, SLOT(showImage(cv::Mat*)));
+    disconnect(this->viewOne, SLOT(showImage(cv::Mat*)));
 }
 
 ATVImageLogger::~ATVImageLogger()
