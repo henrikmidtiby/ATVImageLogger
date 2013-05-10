@@ -53,6 +53,9 @@ void ATVImageLogger::drawGui(void )
     connect(this->LogBurstBtn, SIGNAL(pressed()), loggerOne, SLOT(saveImageBurst()));
     connect(this->LogBurstBtn, SIGNAL(pressed()), loggerTwo, SLOT(saveImageBurst()));
 
+    // Define global widget
+    this->globalWidget = new QWidget(this);
+    
     // Create combobox for selecting which image to show
     this->imageSelect = new QComboBox(globalWidget);
     //connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), this, SLOT(currentViewChanged(QString)));
@@ -66,7 +69,6 @@ void ATVImageLogger::drawGui(void )
     this->modicoviText = new QLabel("Modicovi Score:");
     
     // Define placement of gui elements
-    this->globalWidget = new QWidget(this);
     this->Layout = new QGridLayout(this->globalWidget);
     this->sideWidget = new QWidget(globalWidget);
     this->sideLayout = new QGridLayout(this->sideWidget);
