@@ -52,7 +52,7 @@ QTGIGE * ATVImageLogger::startCamera(char* deviceId)
     // Set image acquisition rate
     int acqFramerate = 10;
     device->writeBool("AcquisitionFrameRateEnable", true);
-    device->writeFloat("AcquisitionFrameRateAbs", 10);
+    device->writeFloat("AcquisitionFrameRateAbs", acqFramerate);
     snprintf(buffer, BUFFER_LENGTH, "Setting framerate: %d", acqFramerate);
     cameraInfo.log("startCamera", buffer);
 
