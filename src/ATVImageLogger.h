@@ -33,6 +33,7 @@ public:
     QTGIGE * cameraTwo;
 private:
     void startCameras();
+    QTGIGE * startCamera(char* deviceId);
     void startLoggingSystem();
     void connectImageProducersToGui();
     void connectGuiElements();

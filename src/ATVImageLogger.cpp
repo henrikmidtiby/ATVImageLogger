@@ -20,30 +20,36 @@ ATVImageLogger::ATVImageLogger()
 
 void ATVImageLogger::startCameras()
 {
+    this->cameraOne = startCamera("Basler-21322519");
+    // This delay is needed, otherwise the cameras seems to interfere with each other.
+    usleep(10);
+    this->cameraTwo = startCamera("Basler-21325585");
+}
+
+QTGIGE * ATVImageLogger::startCamera(char* deviceId)
+{
     // Initialize cameras
-    this->cameraOne = new QTGIGE("Basler-21322519");
-    this->cameraTwo = new QTGIGE("Basler-21325585");
+    QTGIGE * device = new QTGIGE(deviceId);
+    std::cout << "device: " << device << std::endl;
     
     // Set ROI
-    this->cameraOne->setROI(0, 0, 2000, 500);
-    this->cameraTwo->setROI(0, 0, 2000, 500);
+    device->setROI(500, 0, 1000, 300);
 
     // Set image acquisition rate
-    this->cameraOne->writeBool("AcquisitionFrameRateEnable", true);
-    this->cameraTwo->writeBool("AcquisitionFrameRateEnable", true);
-    this->cameraOne->writeFloat("AcquisitionFrameRateAbs", 10);
-    this->cameraTwo->writeFloat("AcquisitionFrameRateAbs", 10);
+    device->writeBool("AcquisitionFrameRateEnable", true);
+    device->writeFloat("AcquisitionFrameRateAbs", 10);
 
     // Set exposure time
-    this->cameraOne->writeInt("ExposureTimeRaw", 10000);
-    this->cameraOne->writeInt("ExposureTimeRaw", 10000);
+    device->writeInt("ExposureTimeRaw", 1250);
     
     // Start image acquisition
-    this->cameraOne->startAquisition();
-    this->cameraTwo->startAquisition();
+    device->startAquisition();
+    
+    return device;
 }
 
 void ATVImageLogger::startLoggingSystem()
+{
     // Initialize logger modules
     // Henrik: If the following line is not active a linker error is thrown ...
     LoggerModule test("../Logging", "Tester");
