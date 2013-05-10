@@ -6,6 +6,8 @@
 #include <QApplication>
 #include <QTimer>
 
+#define BUFFER_LENGTH 100
+
 ATVImageLogger::ATVImageLogger()
 {
     qRegisterMetaType< cv::Mat >("cv::Mat");
@@ -28,19 +30,37 @@ void ATVImageLogger::startCameras()
 
 QTGIGE * ATVImageLogger::startCamera(char* deviceId)
 {
+    LoggerModule cameraInfo("../Logging", "Camera information");
+    char buffer[BUFFER_LENGTH];
+
     // Initialize cameras
     QTGIGE * device = new QTGIGE(deviceId);
     std::cout << "device: " << device << std::endl;
+    snprintf(buffer, BUFFER_LENGTH, "Opening device: %s", deviceId);
+    cameraInfo.log("startCamera", buffer);
     
     // Set ROI
-    device->setROI(500, 0, 1000, 300);
+    int width = 800;
+    int height = 800;
+    int offsetWidth = 600;
+    int offsetHeight = 0;
+    snprintf(buffer, BUFFER_LENGTH, "Setting roi: %d %d %d %d", width, height, offsetWidth, offsetHeight);
+    cameraInfo.log("startCamera", buffer);
+    device->setROI(offsetWidth, offsetHeight, width, height);
+    
 
     // Set image acquisition rate
+    int acqFramerate = 10;
     device->writeBool("AcquisitionFrameRateEnable", true);
     device->writeFloat("AcquisitionFrameRateAbs", 10);
+    snprintf(buffer, BUFFER_LENGTH, "Setting framerate: %d", acqFramerate);
+    cameraInfo.log("startCamera", buffer);
 
     // Set exposure time
-    device->writeInt("ExposureTimeRaw", 1250);
+    int rawExposureTime = 3000;
+    device->writeInt("ExposureTimeRaw", 3000);
+    snprintf(buffer, BUFFER_LENGTH, "Setting exposure time: %d", rawExposureTime);
+    cameraInfo.log("startCamera", buffer);
     
     // Start image acquisition
     device->startAquisition();
