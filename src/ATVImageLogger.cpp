@@ -11,16 +11,15 @@ ATVImageLogger::ATVImageLogger()
     qRegisterMetaType< cv::Mat >("cv::Mat");
 
     startCameras();
-    
-    // Connect cameras with the gui
-    connect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgOne, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
-    connect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgTwo, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
-
     startLoggingSystem();
 
     drawGui();
+    // Connect image producers to the gui.
     connect(&exgOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
     connect(&exgTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
+    connect(&demOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
+    connect(&demTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
+    // 
     connect(cameraSettingsBtn, SIGNAL(pressed()), cameraOne, SLOT(showCameraSettings()));
 }
 
@@ -85,7 +84,6 @@ void ATVImageLogger::drawGui(void )
     connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), this, SLOT(imshowSelectorChanged(QString)));
     this->imageSelect->addItem("Input");
     this->imageSelect->addItem("Excess Green");
-    this->imageSelect->addItem("Color");
 
     // Create other gui elements
     this->cameraSettingsBtn = new QPushButton("Camera settings");
@@ -116,6 +114,21 @@ void ATVImageLogger::currentViewChanged(const QString& text)
 void ATVImageLogger::imshowSelectorChanged(QString text)
 {
     std::cout << "<imshowSelectorChanged(" << text.toLocal8Bit().data() << ")>" << std::endl;
+    disconnect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &demOne, SLOT(newBayerGRImage(cv::Mat, qint64)));
+    disconnect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &demTwo, SLOT(newBayerGRImage(cv::Mat, qint64)));
+    disconnect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgOne, SLOT(newBayerGRImage(cv::Mat, qint64)));
+    disconnect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgTwo, SLOT(newBayerGRImage(cv::Mat, qint64)));
+
+    if(text.contains("Input"))
+    {
+        connect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &demOne, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
+        connect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &demTwo, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
+    }
+    if(text.contains("Excess Green"))
+    {
+	connect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgOne, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
+	connect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgTwo, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
+    }
 }
 
 ATVImageLogger::~ATVImageLogger()

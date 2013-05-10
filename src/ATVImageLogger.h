@@ -45,7 +45,8 @@ private:
     QWidget *sideWidget;
     QComboBox *imageSelect;
     QLabel * modicoviText;
-    demosaic_cv dem;
+    demosaic_cv demOne;
+    demosaic_cv demTwo;
     ExG_cv exgOne;
     ExG_cv exgTwo;
     ImageLogger * loggerOne;
