@@ -14,13 +14,9 @@ ATVImageLogger::ATVImageLogger()
     startLoggingSystem();
 
     drawGui();
-    // Connect image producers to the gui.
-    connect(&exgOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
-    connect(&exgTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
-    connect(&demOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
-    connect(&demTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
     // 
     connect(cameraSettingsBtn, SIGNAL(pressed()), cameraOne, SLOT(showCameraSettings()));
+    connectImageProducersToGui();
 }
 
 void ATVImageLogger::startCameras()
@@ -103,6 +99,14 @@ void ATVImageLogger::drawGui(void )
     this->sideWidget->setLayout(this->sideLayout);
     this->globalWidget->setLayout(this->Layout);
     setCentralWidget(this->globalWidget);
+}
+
+void ATVImageLogger::connectImageProducersToGui()
+{
+    connect(&exgOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
+    connect(&exgTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
+    connect(&demOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
+    connect(&demTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
 }
 
 void ATVImageLogger::currentViewChanged(const QString& text)
