@@ -14,9 +14,8 @@ ATVImageLogger::ATVImageLogger()
     startLoggingSystem();
 
     drawGui();
-    // 
-    connect(cameraSettingsBtn, SIGNAL(pressed()), cameraOne, SLOT(showCameraSettings()));
     connectImageProducersToGui();
+    connectGuiElements();
 }
 
 void ATVImageLogger::startCameras()
@@ -107,6 +106,11 @@ void ATVImageLogger::connectImageProducersToGui()
     connect(&exgTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
     connect(&demOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
     connect(&demTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
+}
+
+void ATVImageLogger::connectGuiElements()
+{
+    connect(cameraSettingsBtn, SIGNAL(pressed()), cameraOne, SLOT(showCameraSettings()));
 }
 
 void ATVImageLogger::currentViewChanged(const QString& text)

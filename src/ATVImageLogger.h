@@ -35,6 +35,7 @@ private:
     void startCameras();
     void startLoggingSystem();
     void connectImageProducersToGui();
+    void connectGuiElements();
     QPushButton * LogBurstBtn;
     QPushButton * cameraSettingsBtn;
     CQtOpenCVViewerGl * viewOne;
