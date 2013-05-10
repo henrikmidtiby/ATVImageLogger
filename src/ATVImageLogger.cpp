@@ -9,14 +9,8 @@
 ATVImageLogger::ATVImageLogger()
 {
     qRegisterMetaType< cv::Mat >("cv::Mat");
-    
-    // Initialize cameras
-    this->cameraOne = new QTGIGE("Basler-21272795");
-    this->cameraTwo = new QTGIGE("Basler-21272796");
-    
-    // Start image acquisition
-    this->cameraOne->startAquisition();
-    this->cameraTwo->startAquisition();
+
+    startCameras();
     
     // Connect cameras with the gui
     connect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgOne, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
@@ -36,6 +30,31 @@ ATVImageLogger::ATVImageLogger()
     connect(&exgOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
     connect(&exgTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
     connect(cameraSettingsBtn, SIGNAL(pressed()), cameraOne, SLOT(showCameraSettings()));
+}
+
+void ATVImageLogger::startCameras()
+{
+    // Initialize cameras
+    this->cameraOne = new QTGIGE("Basler-21322519");
+    this->cameraTwo = new QTGIGE("Basler-21325585");
+    
+    // Set ROI
+    this->cameraOne->setROI(0, 0, 2000, 500);
+    this->cameraTwo->setROI(0, 0, 2000, 500);
+
+    // Set image acquisition rate
+    this->cameraOne->writeBool("AcquisitionFrameRateEnable", true);
+    this->cameraTwo->writeBool("AcquisitionFrameRateEnable", true);
+    this->cameraOne->writeFloat("AcquisitionFrameRateAbs", 10);
+    this->cameraTwo->writeFloat("AcquisitionFrameRateAbs", 10);
+
+    // Set exposure time
+    this->cameraOne->writeInt("ExposureTimeRaw", 10000);
+    this->cameraOne->writeInt("ExposureTimeRaw", 10000);
+    
+    // Start image acquisition
+    this->cameraOne->startAquisition();
+    this->cameraTwo->startAquisition();
 }
 
 void ATVImageLogger::drawGui(void )
