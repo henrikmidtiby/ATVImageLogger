@@ -68,6 +68,7 @@ void demosaic_cv::run()
 	return;
     }
     cv::Mat img = Imgs.dequeue();
+    qint64 imgTimestamp = Timestamps.dequeue();
     cv::Mat rgb;
     cv::Mat BayerGR8;
     //img.convertTo(BayerGR8, BayerGR8.type(), 1.0/256.0);
@@ -75,12 +76,14 @@ void demosaic_cv::run()
 //    QString fname("Img_" + QString::number(i++) + ".png");
 //    cv::imwrite(fname.toLocal8Bit().constData(), BayerGR8);
     cv::cvtColor(BayerGR8, rgb, CV_BayerGB2BGR);
-    emit(newImage(rgb));    
+    emit(newImage(rgb, imgTimestamp));    
   }
 }
 
-void demosaic_cv::newBayerGRImage(cv::Mat img)
+void demosaic_cv::newBayerGRImage(cv::Mat img, qint64 timestamp)
 {
   Imgs.enqueue(img);
+  Timestamps.enqueue(timestamp);
   semImg.release(1);
 }
+
