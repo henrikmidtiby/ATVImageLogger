@@ -38,7 +38,8 @@ private:
     void connectImageProducersToGui();
     void connectGuiElements();
     QPushButton * LogBurstBtn;
-    QPushButton * cameraSettingsBtn;
+    QPushButton * cameraSettingsOneBtn;
+    QPushButton * cameraSettingsTwoBtn;
     CQtOpenCVViewerGl * viewOne;
     CQtOpenCVViewerGl * viewTwo;
     void drawGui(void);

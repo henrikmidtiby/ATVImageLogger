@@ -87,7 +87,8 @@ void ATVImageLogger::drawGui(void )
     this->imageSelect->addItem("Excess Green");
 
     // Create other gui elements
-    this->cameraSettingsBtn = new QPushButton("Camera settings");
+    this->cameraSettingsOneBtn = new QPushButton("Camera one settings");
+    this->cameraSettingsTwoBtn = new QPushButton("Camera two settings");
     this->modicoviText = new QLabel("Modicovi Score:");
     
     // Define placement of gui elements
@@ -100,7 +101,8 @@ void ATVImageLogger::drawGui(void )
     this->Layout->addWidget(sideWidget, 1,2);
     this->sideLayout->addWidget(modicoviText, 1,1);
     this->sideLayout->addWidget(LogBurstBtn, 2,1);
-    this->sideLayout->addWidget(cameraSettingsBtn, 3,1);
+    this->sideLayout->addWidget(cameraSettingsOneBtn, 3,1);
+    this->sideLayout->addWidget(cameraSettingsTwoBtn, 4,1);
     this->sideWidget->setLayout(this->sideLayout);
     this->globalWidget->setLayout(this->Layout);
     setCentralWidget(this->globalWidget);
@@ -116,7 +118,8 @@ void ATVImageLogger::connectImageProducersToGui()
 
 void ATVImageLogger::connectGuiElements()
 {
-    connect(cameraSettingsBtn, SIGNAL(pressed()), cameraOne, SLOT(showCameraSettings()));
+    connect(cameraSettingsOneBtn, SIGNAL(pressed()), cameraOne, SLOT(showCameraSettings()));
+    connect(cameraSettingsTwoBtn, SIGNAL(pressed()), cameraTwo, SLOT(showCameraSettings()));
 }
 
 void ATVImageLogger::currentViewChanged(const QString& text)
