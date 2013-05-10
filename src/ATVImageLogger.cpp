@@ -16,15 +16,7 @@ ATVImageLogger::ATVImageLogger()
     connect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgOne, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
     connect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgTwo, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
 
-    // Initialize logger modules
-    // Henrik: If the following line is not active a linker error is thrown ...
-    LoggerModule test("../Logging", "Tester");
-    this->loggerOne = new ImageLogger("../Logging", "CameraOne");
-    this->loggerTwo = new ImageLogger("../Logging", "CameraTwo");
-    
-    // Connect cameras with the logging system
-    connect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), loggerOne, SLOT(burstImageLogger(cv::Mat, qint64)), Qt::QueuedConnection);
-    connect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), loggerTwo, SLOT(burstImageLogger(cv::Mat, qint64)), Qt::QueuedConnection);
+    startLoggingSystem();
 
     drawGui();
     connect(&exgOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
@@ -55,6 +47,18 @@ void ATVImageLogger::startCameras()
     // Start image acquisition
     this->cameraOne->startAquisition();
     this->cameraTwo->startAquisition();
+}
+
+void ATVImageLogger::startLoggingSystem()
+    // Initialize logger modules
+    // Henrik: If the following line is not active a linker error is thrown ...
+    LoggerModule test("../Logging", "Tester");
+    this->loggerOne = new ImageLogger("../Logging", "CameraOne");
+    this->loggerTwo = new ImageLogger("../Logging", "CameraTwo");
+    
+    // Connect cameras with the logging system
+    connect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), loggerOne, SLOT(burstImageLogger(cv::Mat, qint64)), Qt::QueuedConnection);
+    connect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), loggerTwo, SLOT(burstImageLogger(cv::Mat, qint64)), Qt::QueuedConnection);
 }
 
 void ATVImageLogger::drawGui(void )
