@@ -56,10 +56,19 @@ QTGIGE * ATVImageLogger::startCamera(char* deviceId)
     snprintf(buffer, BUFFER_LENGTH, "Setting framerate: %d", acqFramerate);
     cameraInfo.log("startCamera", buffer);
 
-    // Set exposure time
-    int rawExposureTime = 3000;
-    device->writeInt("ExposureTimeRaw", 3000);
-    snprintf(buffer, BUFFER_LENGTH, "Setting exposure time: %d", rawExposureTime);
+//     // Set exposure time
+//     int rawExposureTime = 3000;
+//     device->writeInt("ExposureTimeRaw", rawExposureTime);
+//     snprintf(buffer, BUFFER_LENGTH, "Setting exposure time: %d", rawExposureTime);
+//     cameraInfo.log("startCamera", buffer);
+    
+    // Enable automatic exposure control
+    device->writeEnum("ExposureAuto", "Continuous");
+    
+    // Set target value of the exposure control system.
+    int autoExposureTargetValue = 1024;
+    device->writeInt("AutoTargetValue", autoExposureTargetValue);
+    snprintf(buffer, BUFFER_LENGTH, "Setting exposure target value to: %d", autoExposureTargetValue);
     cameraInfo.log("startCamera", buffer);
     
     // Start image acquisition
