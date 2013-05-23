@@ -105,6 +105,11 @@ void ATVImageLogger::drawGui(void )
     connect(this->LogBurstBtn, SIGNAL(pressed()), loggerOne, SLOT(saveImageBurst()));
     connect(this->LogBurstBtn, SIGNAL(pressed()), loggerTwo, SLOT(saveImageBurst()));
 
+    // Create button for saving one image.
+    this->LogSingleImageBtn = new QPushButton("Log single image burst");
+    connect(this->LogSingleImageBtn, SIGNAL(pressed()), loggerOne, SLOT(saveLastImageInBurst()));
+    connect(this->LogSingleImageBtn, SIGNAL(pressed()), loggerTwo, SLOT(saveLastImageInBurst()));
+    
     // Define global widget
     this->globalWidget = new QWidget(this);
     
@@ -130,8 +135,9 @@ void ATVImageLogger::drawGui(void )
     this->Layout->addWidget(sideWidget, 1,2);
     this->sideLayout->addWidget(modicoviText, 1,1);
     this->sideLayout->addWidget(LogBurstBtn, 2,1);
-    this->sideLayout->addWidget(cameraSettingsOneBtn, 3,1);
-    this->sideLayout->addWidget(cameraSettingsTwoBtn, 4,1);
+    this->sideLayout->addWidget(LogSingleImageBtn, 3,1);
+    this->sideLayout->addWidget(cameraSettingsOneBtn, 4,1);
+    this->sideLayout->addWidget(cameraSettingsTwoBtn, 5,1);
     this->sideWidget->setLayout(this->sideLayout);
     this->globalWidget->setLayout(this->Layout);
     setCentralWidget(this->globalWidget);
