@@ -40,9 +40,9 @@ QTGIGE * ATVImageLogger::startCamera(char* deviceId)
     cameraInfo.log("startCamera", buffer);
     
     // Set ROI
-    int width = 800;
-    int height = 800;
-    int offsetWidth = 600;
+    int width = 2000;
+    int height = 1000;
+    int offsetWidth = 0;
     int offsetHeight = 0;
     snprintf(buffer, BUFFER_LENGTH, "Setting roi: %d %d %d %d", width, height, offsetWidth, offsetHeight);
     cameraInfo.log("startCamera", buffer);
@@ -66,10 +66,13 @@ QTGIGE * ATVImageLogger::startCamera(char* deviceId)
     device->writeEnum("ExposureAuto", "Continuous");
     
     // Set target value of the exposure control system.
-    int autoExposureTargetValue = 1024;
+    int autoExposureTargetValue = 512;
     device->writeInt("AutoTargetValue", autoExposureTargetValue);
     snprintf(buffer, BUFFER_LENGTH, "Setting exposure target value to: %d", autoExposureTargetValue);
     cameraInfo.log("startCamera", buffer);
+    
+    device->writeInt("GevSCPSPacketSize", 8100); // Default value: 1500
+    device->writeInt("GevSCPD", 8000); // Default value: 0
     
     // Start image acquisition
     device->startAquisition();
