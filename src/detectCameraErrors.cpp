@@ -18,28 +18,12 @@ void error_detector::newBayerGRImage(cv::Mat img, qint64 timestamp)
     QTGIGE::convert16to8bit(img, BayerGR8);
     if(previousImage.rows > 0) 
     {
-	std::cout << "Calculating image differences." << std::endl;
-	// Previous image is defined
- 	tempImage = BayerGR8 - previousImage;
-// 	tempImage = abs(tempImage);
-	
-	
-	std::vector<int> compression_params;
-	compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
-	compression_params.push_back(0);
-        QString targetFilename = "Testing.png";
-        cv::imwrite(targetFilename.toStdString(), BayerGR8, compression_params);
-	
-	cv::Mat rowSums;
-	std::cout << "3" << std::endl;
-	cvReduce(&tempImage, &rowSums, 1);
-	std::cout << "4" << std::endl;
-	
+  	tempImage = abs(BayerGR8 - previousImage) + abs(previousImage - BayerGR8);
+	emit(newImage(tempImage, timestamp));    
     }
     else
     {
 	std::cout << "Creating previousImage and tempImage." << std::endl;
-	tempImage = BayerGR8.clone();
     }
     previousImage = BayerGR8.clone();
 }
