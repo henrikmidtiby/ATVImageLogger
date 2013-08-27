@@ -122,6 +122,7 @@ void ATVImageLogger::drawGui(void )
     connect(this->imageSelect, SIGNAL(currentIndexChanged(QString)), this, SLOT(imshowSelectorChanged(QString)));
     this->imageSelect->addItem("Input");
     this->imageSelect->addItem("Excess Green");
+    this->imageSelect->addItem("Error detector");
 
     // Create other gui elements
     this->cameraSettingsOneBtn = new QPushButton("Camera one settings");
@@ -152,6 +153,8 @@ void ATVImageLogger::connectImageProducersToGui()
     connect(&exgTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
     connect(&demOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
     connect(&demTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
+    connect(&errorDetectorOne, SIGNAL(newImage(cv::Mat, qint64)), viewOne, SLOT(showImage(cv::Mat, qint64)));
+    connect(&errorDetectorTwo, SIGNAL(newImage(cv::Mat, qint64)), viewTwo, SLOT(showImage(cv::Mat, qint64)));
 }
 
 void ATVImageLogger::connectGuiElements()
@@ -173,6 +176,8 @@ void ATVImageLogger::imshowSelectorChanged(QString text)
     disconnect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &demTwo, SLOT(newBayerGRImage(cv::Mat, qint64)));
     disconnect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgOne, SLOT(newBayerGRImage(cv::Mat, qint64)));
     disconnect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgTwo, SLOT(newBayerGRImage(cv::Mat, qint64)));
+    disconnect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &errorDetectorOne, SLOT(newBayerGRImage(cv::Mat, qint64)));
+    disconnect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &errorDetectorTwo, SLOT(newBayerGRImage(cv::Mat, qint64)));
 
     if(text.contains("Input"))
     {
@@ -183,6 +188,11 @@ void ATVImageLogger::imshowSelectorChanged(QString text)
     {
 	connect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgOne, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
 	connect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &exgTwo, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
+    }
+    if(text.contains("Error detector"))
+    {
+	connect(this->cameraOne, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &errorDetectorOne, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
+	connect(this->cameraTwo, SIGNAL(newBayerGRImage(cv::Mat, qint64)), &errorDetectorTwo, SLOT(newBayerGRImage(cv::Mat, qint64)), Qt::QueuedConnection);
     }
 }
 

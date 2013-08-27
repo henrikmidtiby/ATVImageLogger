@@ -14,6 +14,7 @@
 
 #include "../include/qOpenGLCVWidget/qOpenGLCVWidget.h"
 #include "demosaic_cv.h"
+#include "detectCameraErrors.h"
 #include "../include/BayerExG/exg_cv.h"
 #include "../include/QtGigE/qtgige.h"
 
@@ -56,6 +57,8 @@ private:
     ExG_cv exgTwo;
     ImageLogger * loggerOne;
     ImageLogger * loggerTwo;
+    error_detector errorDetectorOne;
+    error_detector errorDetectorTwo;
     
 private slots:
     void currentViewChanged ( const QString & text );
