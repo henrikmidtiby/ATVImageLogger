@@ -18,7 +18,7 @@ void error_detector::newBayerGRImage(cv::Mat img, qint64 timestamp)
     QTGIGE::convert16to8bit(img, BayerGR8);
     if(previousImage.rows > 0) 
     {
-  	tempImage = abs(BayerGR8 - previousImage) + abs(previousImage - BayerGR8);
+  	tempImage = 10*abs(BayerGR8 - previousImage) + 10*abs(previousImage - BayerGR8);
 	emit(newImage(tempImage, timestamp));    
     }
     else
