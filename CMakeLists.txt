@@ -5,7 +5,7 @@ find_package(Qt4 REQUIRED QtGui QtCore QtOpenGL)
 find_package(OpenCV REQUIRED)
 find_package(RT REQUIRED)
 find_package(OpenGL REQUIRED)
-set(EMULATE_CAMERA 1)
+set(EMULATE_CAMERA 0)
 set(USE_GPS 0) #If compiling for using a GPS
 set(USE_DATALOGGER 0) #If compiling with datalogging
 set(CalibrateSprayTime 0) #If compiling for spray calibration
