@@ -66,13 +66,19 @@ QTGIGE * ATVImageLogger::startCamera(char* deviceId)
     device->writeEnum("ExposureAuto", "Continuous");
     
     // Set target value of the exposure control system.
-    int autoExposureTargetValue = 512;
+    int autoExposureTargetValue = 800;
     device->writeInt("AutoTargetValue", autoExposureTargetValue);
     snprintf(buffer, BUFFER_LENGTH, "Setting exposure target value to: %d", autoExposureTargetValue);
     cameraInfo.log("startCamera", buffer);
     
-    device->writeInt("GevSCPSPacketSize", 9000); // Default value: 1500, tested with the value 8100
-    device->writeInt("GevSCPD", 10000); // Default value: 0, tested with the value 8000
+	// Some limits for the exposure time.
+// 	device->writeInt("AutoExposureTimeAbsLowerLimit", 100);
+// 	device->writeInt("AutoExposureTimeAbsUpperLimit", 2000);
+
+	// Packet size, should be supported by the used infrastucture (switch etc.)
+	device->writeInt("GevSCPSPacketSize", 9000);
+	// Inter packet delay.
+    device->writeInt("GevSCPD", 10000);
     
     // Start image acquisition
     device->startAquisition();
