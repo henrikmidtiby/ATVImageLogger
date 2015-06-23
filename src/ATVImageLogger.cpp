@@ -22,10 +22,10 @@ ATVImageLogger::ATVImageLogger()
 
 void ATVImageLogger::startCameras()
 {
-    this->cameraOne = startCamera("Basler-21322519");
+    this->cameraOne = startCamera("Basler-21272794");
     // This delay is needed, otherwise the cameras seems to interfere with each other.
     usleep(10);
-    this->cameraTwo = startCamera("Basler-21325585");
+    this->cameraTwo = startCamera("Basler-21272795");
 }
 
 QTGIGE * ATVImageLogger::startCamera(char* deviceId)
